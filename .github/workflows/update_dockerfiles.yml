@@ -9,8 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout files
+        id: checkout
         uses: actions/checkout@master
       - name: Update Dockerfiles
+        id: update_dockerfiles
         uses: ludeeus/dockerfile-updater@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      - run: echo ${{steps.update_dockerfiles.outputs.branch_name}} ${{steps.update_dockerfiles.outputs.sha}}

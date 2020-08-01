@@ -55,6 +55,14 @@ jobs:
 
 _This will run 4:40 PM every day._
 
+## Outputs
+This action will output:
+Variable Name | Description
+-- | --
+`branch_name` | Name of the branch created with all changes
+`sha` | SHA of the branch created
+
+
 ## What is updated now
 
 - Your base image (FROM) if you use `alpine` / `debian`

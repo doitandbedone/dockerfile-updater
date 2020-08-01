@@ -31,6 +31,13 @@ if [ -s changes ]; then
     fi
 fi
 
+# Set output variables
+# Branch name
+echo "::set-output name=branch_name::${ACTION_BRANCHNAME}"
+# SHA of the branch
+SHA=$(git rev-parse ${ACTION_BRANCHNAME})
+echo "::set-output name=sha::${SHA}"
+
 # Set back the active branch
 git checkout "${ACTION_CURRENT_BRANCH}"
 echo "Mischief managed!"

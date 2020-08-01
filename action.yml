@@ -26,6 +26,11 @@ inputs:
   disable_pr:
     description: "Disables auto creation of Pull Request. Setting it to anything will do, except false"
     required: false
+outputs:
+  branch_name:
+    description: "Branch name created with all changes."
+  sha:
+    description: "SHA of the branch created."
 runs:
   using: 'docker'
   image: 'Dockerfile'
