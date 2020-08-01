@@ -2,12 +2,12 @@ import subprocess
 import re
 import json
 from dockerfile_parse import DockerfileParser
-from versions.package import Package
-from versions.pypi import version_pypi
-from versions.alpine import version_alpine
-from versions.debian import version_debian
-from versions.docker import get_docker_tags
-from helpers import get_packages
+from .versions.package import Package
+from .versions.pypi import version_pypi
+from .versions.alpine import version_alpine
+from .versions.debian import version_debian
+from .versions.docker import get_docker_tags
+from .helpers import get_packages
 
 
 class Dockerfile:
@@ -80,8 +80,12 @@ class Dockerfile:
     def update_args(self, structure):
         inputArgs = self.config.args
         print("ARGs recevied as input: \n", inputArgs)
-        for fileArgs in structure["arg"] or []:
-            keyValue = fileArgs.split("=")
+        fileArgList = structure["arg"]
+        if not fileArgList:
+            print("No ARGs found in file.")
+            return
+        for fileArg in fileArgList:
+            keyValue = fileArg.split("=")
             key = keyValue[0]
             # In case ARG value is not set
             value = "<value not set>"
@@ -96,13 +100,13 @@ class Dockerfile:
             # Lookup the desired args to change
             print("Existing keyValues: \n", keyValue)
             arg = inputArgs.get(key)
-            print("Lookup key: " + key + " | value: " + arg)
+            print("Lookup key: ", key) 
             if(arg):
+                print("Key match. Value: ", arg)
                 self.get_content()
-                self.content = self.content.replace("ARG " + fileArgs, "ARG " + arg)
+                self.content = self.content.replace("ARG " + fileArg, "ARG " + arg)
                 self.write_content()
                 self.commit("ARG " + key, value, arg.split("=")[-1])
-                
 
     def update_base_image(self, structure):
         installed = structure.get("from")[0].strip()
@@ -172,7 +176,9 @@ class Dockerfile:
         for package in get_packages(structure)["alpine"]:
             if "==" not in package.old:
                 package.available = version_alpine(package.name)
-                print(f"[alpine] {package.name} {package.installed} - {package.available}")
+                print(
+                    f"[alpine] {package.name} {package.installed} - {package.available}"
+                )
                 if package.updated:
                     self.get_content()
                     self.content = self.content.replace(package.old, package.new)
@@ -183,7 +189,9 @@ class Dockerfile:
         for package in get_packages(structure)["debian"]:
             if "==" not in package.old:
                 package.available = version_debian(package.name)
-                print(f"[debian] {package.name} {package.installed} - {package.available}")
+                print(
+                    f"[debian] {package.name} {package.installed} - {package.available}"
+                )
                 if package.updated:
                     self.get_content()
                     self.content = self.content.replace(package.old, package.new)

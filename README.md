@@ -46,9 +46,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout files
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
       - name: Update Dockerfiles
-        uses: ludeeus/dockerfile-updater@master
+        uses: ludeeus/dockerfile-updater@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -68,12 +68,12 @@ Variable Name | Description
 - Your base image (FROM) if you use `alpine` / `debian`
 - Packages from PyPi.
 - Alpine packages you install with `apk add`
+- Special ARG variables, (formats: `ARG S6_OVERLAY="vX.X.X"` / `ARG MYARG`).
 
 ## Planed for the future
 
 - Debian packages you install with `apt install`
 - More base images.
-- Special ARG variables, (like `ARG S6_OVERLAY="vX.X.X"`).
 
 ***
 
