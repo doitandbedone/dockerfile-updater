@@ -84,7 +84,7 @@ class Dockerfile:
             keyValue = fileArgs.split("=")
             key = keyValue[0]
             # In case ARG value is not set
-            value = ""
+            value = "<value not set>"
             keyValueSize = len(keyValue)
             # Validate format
             if(keyValueSize > 2):
@@ -96,7 +96,7 @@ class Dockerfile:
             # Lookup the desired args to change
             print("Existing keyValues: \n", keyValue)
             arg = inputArgs.get(key)
-            print("Lookup key: " + key + " | Value: " + arg)
+            print("Lookup key: " + key + " | value: " + arg)
             if(arg):
                 self.get_content()
                 self.content = self.content.replace("ARG " + fileArgs, "ARG " + arg)
