@@ -14,7 +14,7 @@ git config --local user.name "GitHub Action"
 git checkout -b "${ACTION_BRANCHNAME}"
 
 # Execute action
-python3 -m /action/run.py
+python3 -m run.py
 if [ "$?" != "0" ]; then
     exit 1
 fi
@@ -24,7 +24,7 @@ fi
 if [ -s changes ]; then
     git push "https://x-access-token:${INPUT_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "${ACTION_BRANCHNAME}"
     if [ -n ${INPUT_DISABLE_PR+x} ] || [ "${INPUT_DISABLE_PR}" = "false" ]; then
-        python3 -m /action/create_pr.py 
+        python3 -m create_pr.py 
     fi
     else
         echo "Automatic PR disabled"
