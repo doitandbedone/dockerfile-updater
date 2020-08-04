@@ -1,6 +1,10 @@
 #!/bin/bash
 echo "I solemnly swear that I am up to no good."
 current_branch=$(git branch --show-current)
+# If there's no selected branch, select default branch
+if [ -n ${current_branch+x} ]; then
+    current_branch=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5)
+fi
 export ACTION_CURRENT_BRANCH="${current_branch}"
 
 timestamp=$(date +%s)
